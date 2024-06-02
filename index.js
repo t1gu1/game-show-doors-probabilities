@@ -28,9 +28,50 @@ function removeAllNonWinningBox (boxes) {
   return removeAllNonWinningBox(boxes);
 }
 
-function game() {
+function gameWhereUserKeepTheSameDoor() {
   const chosedNumber = getRandomInt(3)
   return chosedNumber === removeAllNonWinningBox(setupGame())[0].box
 }
 
-console.log(game())
+function removeNonWinningAndUserBox (boxes, userBox) {
+  const boxToRemove = getRandomInt(boxes.length);
+  
+  if(boxes[boxToRemove].isWinning === true || boxes[boxToRemove].box === userBox) return removeNonWinningBox(boxes, userBox);
+  boxes.splice(boxToRemove, 1)
+  return boxes
+}
+
+function gameWhereUserChangeDoor() {
+  let boxes = setupGame();
+  let chosedNumber = getRandomInt(3)
+  let boxesRemaning = removeNonWinningBox(boxes)
+
+  chosedNumber = boxesRemaning.filter(({box}) => box !== chosedNumber)[0]
+
+  return chosedNumber.isWinning;
+}
+
+function countProbabilities() {
+  let results = {
+    keepSameDoor: {
+      wins: 0,
+      looses: 0
+    },
+    changeDoor: {
+      wins: 0,
+      looses: 0
+    }
+  }
+
+  for (let i = 0; i < 100000; i++) {
+    if(gameWhereUserKeepTheSameDoor()) results.keepSameDoor.wins++
+    else results.keepSameDoor.looses++
+
+    if(gameWhereUserChangeDoor()) results.changeDoor.wins++
+    else results.changeDoor.looses++
+  }
+
+  return results
+}
+
+console.log(countProbabilities())
