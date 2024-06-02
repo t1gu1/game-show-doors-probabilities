@@ -63,7 +63,7 @@ function countProbabilities() {
     }
   }
 
-  for (let i = 0; i < 100000; i++) {
+  for (let i = 0; i < 1000000; i++) {
     if(gameWhereUserKeepTheSameDoor()) results.keepSameDoor.wins++
     else results.keepSameDoor.looses++
 
